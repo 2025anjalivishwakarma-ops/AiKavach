@@ -5,6 +5,7 @@ export default defineConfig({
     plugins: [react()],
     server: {
         host: '0.0.0.0',
+        allowedHosts: ['aikavach-frontend.onrender.com'],
         proxy: {
             '/api': {
                 target: process.env.VITE_API_PROXY_TARGET || 'http://localhost:3001',
