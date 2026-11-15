@@ -1,0 +1,10 @@
+﻿node_modules/
+dist/
+.env
+.env.*
+!.env.example
+aikavach-data.json
+*.sqlite
+*.sqlite3
+*.db
+.DS_Store
