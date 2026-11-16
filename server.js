@@ -10,6 +10,7 @@ import { google } from 'googleapis';
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const port = Number(process.env.PORT || 3001);
 const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$/, '');
 
@@ -159,11 +160,11 @@ app.post('/api/auth/register', async(req, res) => {
 // Login
 app.post('/api/auth/login', async(req, res) => {
     try {
-        const email = String(req.body ?.email || '')
+        const email = String(req.body ? .email || '')
             .trim()
             .toLowerCase();
 
-        const password = String(req.body ?.password || '');
+        const password = String(req.body ? .password || '');
 
         const data = readData();
 
@@ -406,7 +407,7 @@ app.get(
                 provider,
                 access_token: tokens.access_token,
                 refresh_token: tokens.refresh_token ||
-                    existing ?.refresh_token ||
+                    existing ? .refresh_token ||
                     null,
                 expires_at: Date.now() + (tokens.expires_in || 3600) * 1000,
                 scope: tokens.scope || config.scope
@@ -580,18 +581,18 @@ app.get('/api/mailbox/messages', requireAuth, async(req, res) => {
                 });
 
                 const message = response.data;
-                const headers = message.payload ?.headers || [];
+                const headers = message.payload ? .headers || [];
                 const getHeader = (name) =>
                     headers.find(
                         (header) =>
-                        header.name ?.toLowerCase() === name.toLowerCase()
-                    ) ?.value || '';
+                        header.name ? .toLowerCase() === name.toLowerCase()
+                    ) ? .value || '';
 
                 // Decode Gmail's base64url-encoded message body.
                 const decodeBody = part => {
                     if (!part) return '';
 
-                    if (part.body ?.data) {
+                    if (part.body ? .data) {
                         return Buffer.from(
                             part.body.data,
                             'base64url'
@@ -611,7 +612,7 @@ app.get('/api/mailbox/messages', requireAuth, async(req, res) => {
 
                     if (
                         part.mimeType === 'text/plain' &&
-                        part.body ?.data
+                        part.body ? .data
                     ) {
                         return decodeBody(part);
                     }
@@ -653,12 +654,12 @@ app.get('/api/mailbox/messages', requireAuth, async(req, res) => {
     } catch (error) {
         console.error(
             'Gmail retrieval failed:',
-            error.response ?.data ?.error || error.message
+            error.response ? .data ? .error || error.message
         );
 
-        if (error.response ?.status === 401 ||
-            error.response ?.status === 403) {
-            return res.status(error.response ?.status).json({
+        if (error.response ? .status === 401 ||
+            error.response ? .status === 403) {
+            return res.status(error.response ? .status).json({
                 message: 'Gmail access was denied. Check the Gmail permission and reconnect Google if necessary.'
             });
         }
